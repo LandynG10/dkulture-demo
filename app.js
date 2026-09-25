@@ -96,10 +96,12 @@ function card(s) {
         <span class="svc-price">$${s.price}</span>
       </div>
       <p class="svc-meta">${s.duration}${s.noDeposit ? '' : ' · $20 deposit required'}</p>
-      <p class="svc-desc">${s.desc}</p>
+      <p class="svc-desc">${s.desc} <span class="svc-more">more</span></p>
       ${prep}
-      <a class="btn btn-book" href="${BOOK_BASE}${s.itemId}" target="_blank" rel="noopener">Book — $${s.price}</a>
-      ${s.noDeposit ? '' : `<a class="btn-dep" href="${CASHAPP}" target="_blank" rel="noopener">Send $20 deposit · Cash App</a>`}
+      <div class="svc-actions">
+        <a class="btn btn-book" href="${BOOK_BASE}${s.itemId}" target="_blank" rel="noopener">Book — $${s.price}</a>
+        ${s.noDeposit ? '' : `<a class="btn-dep" href="${CASHAPP}" target="_blank" rel="noopener"><span class="dep-full">Send $20 deposit · Cash App</span><span class="dep-short">$20 deposit</span></a>`}
+      </div>
     </div>
   </article>`;
 }
@@ -205,6 +207,12 @@ function applyFocusZoom() {
 strip.addEventListener('scroll', applyFocusZoom, { passive: true });
 if (!matchMedia('(prefers-reduced-motion: reduce)').matches) driftFrame();
 setInterval(applyFocusZoom, 120);
+
+// ---- Expandable service descriptions (mobile) ----
+grid.addEventListener('click', (e) => {
+  const more = e.target.closest('.svc-more');
+  if (more) more.closest('.svc-desc').classList.toggle('open');
+});
 
 // ---- Mobile menu ----
 const menuBtn = document.getElementById('menuBtn');
